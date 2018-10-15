@@ -1,28 +1,45 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { loadChannels } from './actions/loadChannels'
+import { ChannelsList } from './components/channels-list'
+import styled, { injectGlobal } from 'styled-components'
+import { Favorites } from './components/favorites'
+import './reset.css'
 
-class App extends Component {
+injectGlobal`
+
+  #root {
+    height: 100%;
+  }
+  html, body {
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+  }
+`
+
+const AppContainer = styled.div`
+  display: flex;
+  background: #000;
+  width: 100%;
+  height: 100%;
+`
+
+class AppComponent extends Component {
+
+  componentDidMount() {
+    this.props.loadChannels()
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <AppContainer>
+        <Favorites/>
+        <ChannelsList/>
+      </AppContainer>
     );
   }
 }
 
-export default App;
+export const App = connect(null, {
+  loadChannels
+})(AppComponent)
